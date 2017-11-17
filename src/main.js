@@ -6,10 +6,14 @@ import Vue from 'vue'
 import App from './App'
 //import the vue router
 import VueRouter from 'vue-router'
+//import the hello component
+import HelloWorld from './components/HelloWorld'
 //tell vue to use the router
 Vue.use(VueRouter)
 //define your routes
-const routes = []
+const routes = [
+  { path: '/', component: HelloWorld }
+]
 
 // Create the router instance and pass the `routes` option
 // You can pass in additional options here, but let's
