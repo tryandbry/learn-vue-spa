@@ -6,13 +6,21 @@ import Vue from 'vue'
 import App from './App'
 //import the vue router
 import VueRouter from 'vue-router'
-//import the hello component
+
+//components
 import HelloWorld from './components/HelloWorld'
+import About from './components/About'
+import Param from './components/Param'
+import paramdetails from './components/paramdetails'
+
 //tell vue to use the router
 Vue.use(VueRouter)
 //define your routes
 const routes = [
-  { path: '/', component: HelloWorld }
+  { path: '/', component: HelloWorld },
+  { path: '/about', component: About },
+  { path: '/param', component: Param },
+  { path: '/Paramdetails/:id', component: paramdetails, name: 'Paramdetails' },
 ]
 
 // Create the router instance and pass the `routes` option
@@ -22,7 +30,35 @@ const router = new VueRouter({
   routes, // short for routes: routes
   mode: 'history'
 })
-//instatinat the vue instance
+
+//route guard
+router.beforeEach( (to,from,next) => {
+  //check if the path is valid
+  if(to.path == '/param'){
+    //check if user item is already set
+    if(localStorage.getItem('user') == undefined) {
+      //prompt for username
+      var user = prompt('please enter your username');
+      //prompt for password
+      var pass = prompt('please enter your password');
+      //check if the username and password match our records
+      if(user == 'username' && pass == 'password'){
+        //set the user item
+        localStorage.setItem('user',user);
+        //move to the route
+        next();
+      }
+      else {
+        alert('Wrong username and password.  You do not have permission to access that route');
+        return;
+      }
+    }
+  }
+
+  next();
+});
+
+//instantiate the vue instance
 new Vue({
 //define the selector for the root component
   el: '#app',
